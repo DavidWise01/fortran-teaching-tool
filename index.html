@@ -1,0 +1,121 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Fortran Teaching Tool</title><style>:root{--bg:#071018;--panel:#0d1d2a;--ink:#eef8ff;--muted:#9eb6c7;--line:#24465c;--blue:#55c7ff;--green:#79f2b4;--warn:#ffd36b;--bad:#ff7a90}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 10%,#123b55,transparent 30rem),linear-gradient(135deg,#05080d,#071018 50%,#030506);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,sans-serif}header{padding:48px 24px 24px;max-width:1180px;margin:auto}h1{font-size:clamp(40px,7vw,82px);line-height:.9;margin:0 0 16px;letter-spacing:-.06em}p{color:var(--muted);line-height:1.65}.wrap{max-width:1180px;margin:auto;padding:20px 24px 60px;display:grid;grid-template-columns:280px 1fr;gap:20px}nav{position:sticky;top:16px;height:max-content;border:1px solid var(--line);background:rgba(13,29,42,.82);border-radius:22px;padding:14px;backdrop-filter:blur(12px)}nav button{display:block;width:100%;text-align:left;margin:6px 0;padding:12px 14px;border:1px solid transparent;border-radius:14px;background:transparent;color:var(--ink);cursor:pointer;font:inherit}nav button:hover,nav button.active{border-color:var(--line);background:#10283a}.card{border:1px solid var(--line);background:rgba(13,29,42,.86);border-radius:24px;padding:22px;margin-bottom:18px;box-shadow:0 22px 70px rgba(0,0,0,.25)}h2{font-size:clamp(28px,4vw,48px);letter-spacing:-.04em;margin:0 0 12px}h3{margin:22px 0 8px;color:var(--green)}code,kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}pre{background:#031018;border:1px solid #1d4057;border-radius:18px;padding:16px;overflow:auto;line-height:1.5;color:#daf5ff}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.mini{border:1px solid #24465c;border-radius:18px;padding:14px;background:#0a1a27}.badge{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:8px 12px;color:var(--muted);font-size:13px}.good{color:var(--green)}.warn{color:var(--warn)}.bad{color:var(--bad)}.quiz button{margin:6px 6px 6px 0;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:#0a1a27;color:var(--ink);cursor:pointer}.result{margin-top:10px;font-weight:700}footer{max-width:1180px;margin:auto;padding:0 24px 40px;color:var(--muted)}@media(max-width:860px){.wrap{grid-template-columns:1fr}nav{position:relative;top:auto}.grid{grid-template-columns:1fr}}</style></head><body><header><span class="badge">Fortran 90/95 foundation + modern habits</span><h1>Fortran Teaching Tool</h1><p>Basics through intermediate Fortran: program structure, variables, arrays, procedures, modules, files, allocation, derived types, and numerical patterns.</p></header><div class="wrap"><nav id="nav"></nav><main id="main"></main></div><footer>Tip: install <code>gfortran</code>, save examples as <code>.f90</code>, compile with <code>gfortran file.f90 -o app</code>, run with <code>./app</code>.</footer><script>
+const lessons=[
+{title:'1. First Program',level:'Basics',body:`<p>Modern Fortran source usually uses free-form files ending in <code>.f90</code>.</p><pre><code>program hello
+  implicit none
+  print *, "Hello, Fortran"
+end program hello</code></pre><div class="mini"><b>Rule:</b> use <code>implicit none</code> in every program, module, and procedure.</div><h3>Compile</h3><pre><code>gfortran hello.f90 -o hello
+./hello</code></pre>`},
+{title:'2. Variables and Types',level:'Basics',body:`<p>Common scalar types are <code>integer</code>, <code>real</code>, <code>logical</code>, <code>character</code>, and <code>complex</code>.</p><pre><code>program variables
+  implicit none
+  integer :: count
+  real :: temperature
+  logical :: ready
+  character(len=20) :: name
+
+  count = 3
+  temperature = 21.5
+  ready = .true.
+  name = "Ada"
+  print *, count, temperature, ready, trim(name)
+end program variables</code></pre>`},
+{title:'3. Control Flow',level:'Basics',body:`<pre><code>program control
+  implicit none
+  integer :: i
+  do i = 1, 5
+    if (mod(i, 2) == 0) then
+      print *, i, "even"
+    else
+      print *, i, "odd"
+    end if
+  end do
+end program control</code></pre>`},
+{title:'4. Arrays',level:'Basics',body:`<p>Fortran is strong at arrays. Indexing starts at 1 by default.</p><pre><code>program arrays
+  implicit none
+  real :: x(5)
+  integer :: i
+  do i = 1, size(x)
+    x(i) = real(i)**2
+  end do
+  print *, x
+  print *, sum(x), maxval(x)
+end program arrays</code></pre><div class="mini">Array syntax: <code>x = x * 2.0</code> applies to the whole array.</div>`},
+{title:'5. Procedures',level:'Basics',body:`<p>Use functions for values and subroutines for actions.</p><pre><code>program procedures
+  implicit none
+  print *, square(4.0)
+contains
+  real function square(x)
+    real, intent(in) :: x
+    square = x * x
+  end function square
+end program procedures</code></pre>`},
+{title:'6. Modules',level:'Intermediate',body:`<p>Modules package constants, procedures, and types for reuse.</p><pre><code>module math_tools
+  implicit none
+  private
+  public :: dp, hypotenuse
+  integer, parameter :: dp = kind(1.0d0)
+contains
+  real(dp) function hypotenuse(a, b)
+    real(dp), intent(in) :: a, b
+    hypotenuse = sqrt(a*a + b*b)
+  end function hypotenuse
+end module math_tools
+
+program use_module
+  use math_tools
+  implicit none
+  print *, hypotenuse(3.0_dp, 4.0_dp)
+end program use_module</code></pre>`},
+{title:'7. Precision',level:'Intermediate',body:`<p>Avoid hard-coding precision. Define a kind parameter.</p><pre><code>module precision
+  implicit none
+  integer, parameter :: dp = selected_real_kind(15, 307)
+end module precision</code></pre><pre><code>real(dp) :: x
+x = 1.0_dp / 3.0_dp</code></pre>`},
+{title:'8. Allocatable Arrays',level:'Intermediate',body:`<p>Use allocatable arrays when size is known at runtime.</p><pre><code>program dynamic_array
+  implicit none
+  real, allocatable :: a(:)
+  integer :: n
+  n = 100
+  allocate(a(n))
+  a = 1.0
+  print *, sum(a)
+  deallocate(a)
+end program dynamic_array</code></pre>`},
+{title:'9. Derived Types',level:'Intermediate',body:`<p>Derived types are structured records.</p><pre><code>program particles
+  implicit none
+  type :: particle
+    real :: x, y, vx, vy
+  end type particle
+  type(particle) :: p
+  p%x = 0.0; p%y = 1.0
+  p%vx = 0.2; p%vy = -0.1
+  print *, p%x, p%y
+end program particles</code></pre>`},
+{title:'10. File I/O',level:'Intermediate',body:`<pre><code>program write_file
+  implicit none
+  integer :: unit
+  open(newunit=unit, file="data.txt", status="replace", action="write")
+  write(unit, *) "time", "value"
+  write(unit, *) 0.0, 1.0
+  close(unit)
+end program write_file</code></pre><p><code>newunit=</code> is safer than manually choosing unit numbers.</p>`},
+{title:'11. Numerical Pattern',level:'Intermediate',body:`<p>Euler integration of <code>dx/dt = -k x</code>.</p><pre><code>program decay
+  implicit none
+  integer, parameter :: n = 100
+  real :: x, k, dt, t
+  integer :: i
+  x = 1.0; k = 0.2; dt = 0.1
+  do i = 1, n
+    t = i * dt
+    x = x + dt * (-k * x)
+    print *, t, x
+  end do
+end program decay</code></pre>`},
+{title:'12. Best Practices',level:'Intermediate',body:`<div class="grid"><div class="mini"><b class="good">Do</b><br>Use <code>implicit none</code>.</div><div class="mini"><b class="good">Do</b><br>Use modules and explicit interfaces.</div><div class="mini"><b class="good">Do</b><br>Use <code>intent</code> on arguments.</div><div class="mini"><b class="warn">Avoid</b><br>Old fixed-form habits for new code.</div></div>`}
+];
+const quizzes=[{q:'What prevents accidental implicit variable creation?',a:['implicit none','program','allocate'],correct:0},{q:'What is Fortran default first array index?',a:['0','1','-1'],correct:1},{q:'Which argument attribute is read-only?',a:['intent(in)','allocatable','parameter'],correct:0},{q:'What packages reusable procedures and constants?',a:['module','print','select case'],correct:0}];
+const nav=document.getElementById('nav'),main=document.getElementById('main');
+function quizBlock(){return `<section class="card quiz"><h2>Quick Check</h2>${quizzes.map((q,i)=>`<div class="mini"><b>${q.q}</b><br>${q.a.map((x,j)=>`<button data-q="${i}" data-a="${j}">${x}</button>`).join('')}<div id="r${i}" class="result"></div></div>`).join('')}</section>`}
+function attachQuiz(){document.querySelectorAll('.quiz button').forEach(btn=>btn.onclick=()=>{const q=+btn.dataset.q,a=+btn.dataset.a,r=document.getElementById('r'+q);r.textContent=a===quizzes[q].correct?'Correct.':'Try again.';r.className='result '+(a===quizzes[q].correct?'good':'bad')})}
+function render(i){[...nav.children].forEach((b,j)=>b.classList.toggle('active',i===j));const L=lessons[i];main.innerHTML=`<section class="card"><span class="badge">${L.level}</span><h2>${L.title}</h2>${L.body}</section>${quizBlock()}`;attachQuiz()}
+lessons.forEach((L,i)=>{const b=document.createElement('button');b.textContent=L.title;b.onclick=()=>render(i);nav.appendChild(b)});render(0);
+</script></body></html>

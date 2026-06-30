@@ -1,0 +1,10 @@
+{
+  "name": "Fortran Teaching Tool",
+  "version": "1.0.0",
+  "entry": "index.html",
+  "levels": [
+    "basics",
+    "intermediate"
+  ],
+  "dependencies": []
+}
