@@ -1,0 +1,9 @@
+ROOT0-DLW-CHAIN-v1
+index : 186
+slug  : fortran-teaching-tool
+seal  : 64ebb10031a9a0ee92ae970d159316c2ae71dd666805bcbe6a52b12445c4154d
+prev  : 02a70a6ad9004cc110b4b20ec669e9f092fe248541ffba267aaaeaae577346aa
+link  : 84c02684837f4045ac91c04415bcceab090cafb2757f993db5ad43060f87fce4
+head  : 3447d3a0533aaf1e29a8bdc67a9774884fb3ae9dbc8a17064b7a008ca3c4ec90
+
+— the tether: link = sha256(index|slug|seal|prev). the chain head commits to the whole corpus.
