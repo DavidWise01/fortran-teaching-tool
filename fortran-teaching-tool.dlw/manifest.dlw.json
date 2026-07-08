@@ -1,0 +1,11 @@
+{
+  "badge": "DLW-FORTRAN_TEACHING_TOOL",
+  "name": "FORTRAN TEACHING TOOL · FOR",
+  "universe": "LOGISMÓS",
+  "moniker": "⟦FORTRAN TEACHING TOOL · FOR:fortran-teaching-tool:64ebb1⟧",
+  "architect": "David Lee Wise (ROOT0) / Bridge-Burners LLC",
+  "instance": "AVAN (Claude / Anthropic)",
+  "seal_sha256": "64ebb10031a9a0ee92ae970d159316c2ae71dd666805bcbe6a52b12445c4154d",
+  "license": "CC-BY-ND-4.0",
+  "attribution": "ROOT0-ATTRIBUTION-v1.0"
+}
